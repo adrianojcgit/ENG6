@@ -1,0 +1,194 @@
+﻿@*@model IEnumerable<ENG6.Application.DTOs.ClienteDTO>*@
+
+@{
+	ViewData["Title"] = "Clientes";
+}
+<link href="https://cdn.datatables.net/1.10.16/css/jquery.dataTables.min.css" rel="stylesheet" />
+<div>
+	<h2>@ViewData["Title"]</h2>
+</div>
+<hr />
+<div class="row">
+	<div class="col-md-12">
+		<div>
+			<div class="pull-left">
+				<a asp-action="Create" class="btn btn-primary">
+					<span title="Register New" class="fas fa-plus"></span> Register New
+				</a>
+			</div>
+		</div>
+	</div>
+</div>
+<br />
+<div class="panel panel-default">
+	<table id="myDataTable" class="table table-bordered table-striped table-hover table-responsive" style="white-space:nowrap">
+		<thead>
+			<tr>
+			@*	<th>ID</th>*@
+				<th>Nome</th>
+                <th>CNPJ</th>
+				@*<th>Nome Fantasia</th>
+				
+				<th>Fat. Bruto Anual</th>*@
+			</tr>
+		</thead>
+		<tbody>
+			<tr>
+                <td></td>
+                <td></td>
+			</tr>
+		</tbody>
+	</table>
+</div>
+
+@section Scripts{
+	<!-- JS -->
+	<script src="https://cdn.datatables.net/1.10.16/js/jquery.dataTables.min.js"></script>
+	<script type="text/javascript">
+		$(document).ready(function(){
+
+			    //Pega os dados do banco de dados para preencher o datatable
+			    //$('#myDataTable').DataTable({
+				   // "language": {
+					  //  "lengthMenu": "Exibe _MENU_ Registros por página",
+					  //  "search": "Procurar",
+					  //  "paginate": { "previous": "Retorna", "next": "Avança" },
+					  //  "zeroRecords": "Nada foi encontrado",
+					  //  "info": "Exibindo página _PAGE_ de _PAGES_",
+					  //  "infoEmpty": "Sem registros",
+					  //  "infoFiltered": "(filtrado de _MAX_ regitros totais)"
+				   // },
+				   // "processing": true, // mostrar a progress bar
+				   // //"serverSide": true, // processamento no servidor
+				   // "filter": true,     // habilita o filtro(search box)
+				   // "lengthMenu": [[3, 5, 10, 25, 50, -1], [3, 5, 10, 25, 50, "Todos"]],
+				   // "pageLength": 10,    // define o tamanho da página
+				   // 'ajax': {
+					  //  'url': '/Clientes/GetClientes',
+					  //  'type': 'Post',
+					  //  'dataType': 'json'
+				   // },
+				   // 'columns': [
+       //                 { 'data': 'nomeEmpresarial', 'name': 'nomeEmpresarial' },
+       //             ]
+       //       });
+			///////////////
+
+            initDataTable($('#myDataTable'), 0, 'asc', false, true, 10, false, true, false, 'landscape', 'rptHdr');  /* Initialize Table */
+
+            /*---------------------- Datatable initialization  --------------------------- */
+            /*
+             * table           Table id which be initialized
+             * sortCol          Column number that will be initially sortered 
+             * sorOrder         Ascendant (asc) or Descendant (desc)
+             * enFilter         Boolean value to enable or not the filter option
+             * enPaginate       Boolean value to enable or not the filter option
+             * dplyLength       Number of records contained per page when pagination is enabled
+             * enInfo           Boolean value to show or not the records info
+             * autoWidth        Boolean value to enable or not table autowidth
+             * enTblTools       Boolean value to enable or not the table tools addin
+             * pdfOrientation   Page orientation (landscape, portrait) for pdf documents (required enTblTools == enabled)
+             * fileName         Output file naming (required enTblTools == enabled)
+             * 
+              /*------------------------------------------------------------------------------*/
+
+            function initDataTable($table, sortCol, sortOrder, enFilter, enPaginate, dplyLength, enInfo, autoWidth, enTblTools, pdfOrientation, fileName) {
+
+                var dom = (enTblTools) ? 'T' : '';
+
+                var oTable = $table.dataTable({
+                    	'ajax': {
+                    		'url': '/Clientes/GetClientes',
+                    		'type': 'POST',
+                    		'dataType': 'json'
+                    },
+                    	'columns': [
+                        { 'data': 'nomeEmpresarial' }, { 'data': 'cnpjNumInscricao' }
+                    ],
+
+                    //"order": [
+                    //    [sortCol, sortOrder]
+                    //],
+                    "bDestroy": true,
+                    "bProcessing": true,
+                    //"dom": dom,
+                    "bFilter": enFilter,
+                    "bSort": true,
+                    "bSortClasses": true,
+                    "bPaginate": enPaginate,
+                    "sPaginationType": "full_numbers",
+                    "iDisplayLength": dplyLength,
+                    //"bInfo": enInfo,
+                    //"bAutoWidth": autoWidth
+                    //"tableTools": {
+                    //    "aButtons": [
+                    //        {
+                    //            "sExtends": "copy",
+                    //            "sButtonText": "Copy",
+                    //            "bHeader": true,
+                    //            "bFooter": true,
+                    //            "fnComplete": function (nButton, oConfig, oFlash, sFlash) {
+                    //                $().shownotify('showNotify', {
+                    //                    text: 'Table copied to clipboard (no formatting)',
+                    //                    sticky: false,
+                    //                    position: 'middle-center',
+                    //                    type: 'success',
+                    //                    closeText: ''
+                    //                });
+                    //            }
+                    //        } 
+                    //    ,{
+                    //        "sExtends": "csv",
+                    //        "sButtonText": "Excel (CSV)",
+                    //        "sToolTip": "Save as CSV file (no formatting)",
+                    //        "bHeader": true,
+                    //        "bFooter": true,
+                    //        "sTitle": fileName,
+                    //        "sFileName": fileName + ".csv",
+                    //        "fnComplete": function (nButton, oConfig, oFlash, sFlash) {
+                    //            $().shownotify('showNotify', {
+                    //                text: 'CSV file saved in selected location.',
+                    //                sticky: false,
+                    //                position: 'middle-center',
+                    //                type: 'success',
+                    //                closeText: ''
+                    //            });
+                    //        }
+                    //    }, 
+                    //    {
+                    //        "sExtends": "pdf",
+                    //        "sPdfOrientation": pdfOrientation,
+                    //        "bFooter": true,
+                    //        "sTitle": fileName,
+                    //        "sFileName": fileName + ".pdf",
+                    //        "fnComplete": function (nButton, oConfig, oFlash, sFlash) {
+                    //            $().shownotify('showNotify', {
+                    //                text: 'PDF file saved in selected location.',
+                    //                sticky: false,
+                    //                position: 'middle-center',
+                    //                type: 'success',
+                    //                closeText: ''
+                    //            });
+                    //        }
+                    //    },
+                    //    {
+                    //        "sExtends": "Other",
+                    //        "bShowAll": true,
+                    //        "sMessage": fileName,
+                    //        "sInfo": "Please press escape when done"
+                    //    }
+                    //  ]
+                    //}
+                    //"fnDrawCallback": function( oSettings ) {alert( 'DataTables has redrawn the table' );}
+                });
+                /* If is IE then avoid setting the sticky headers */
+                if (!navigator.userAgent.match(/msie/i) && enPaginate == false) {
+                    new $.fn.dataTable.FixedHeader(oTable);
+                }
+
+                return oTable
+            }
+		});
+
+	</script>
+}
