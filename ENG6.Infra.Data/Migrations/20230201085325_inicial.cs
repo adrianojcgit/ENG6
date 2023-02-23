@@ -21,6 +21,8 @@ namespace ENG6.Infra.Data.Migrations
                     NomeEmpresarial = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     NomeFantasia = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     DataImportacao = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    DataCadastro = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    DataAtualizacao = table.Column<DateTime>(type: "datetime2", nullable: true),
                     PorteEmpresa = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     FatBrutoAnual = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
                     Ativo = table.Column<bool>(type: "bit", nullable: false)
